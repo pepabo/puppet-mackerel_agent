@@ -13,14 +13,21 @@ class mackerel_agent::install(
         'Amazon': {
           $baseurl = 'http://yum.mackerel.io/amznlinux/$releasever/$basearch'
           $gpgkey_url = 'https://mackerel.io/assets/files/GPG-KEY-mackerel'
+          $gpgcheck = '1'
         }
         default: {
-          if ($::operatingsystemmajrelease == '6') or ($::operatingsystemmajrelease == '5') {
+          if ($::operatingsystemmajrelease == '6')
             $baseurl = 'http://yum.mackerel.io/centos/$basearch'
             $gpgkey_url = 'https://mackerel.io/assets/files/GPG-KEY-mackerel'
+            $gpgcheck = '1'
+          if ($::operatingsystemmajrelease == '5') {
+            $baseurl = 'http://yum.mackerel.io/centos/$basearch'
+            $gpgkey_url = 'https://mackerel.io/assets/files/GPG-KEY-mackerel'
+            $gpgcheck = '0'
           } else {
             $baseurl = 'http://yum.mackerel.io/v2/$basearch'
             $gpgkey_url = 'https://mackerel.io/file/cert/GPG-KEY-mackerel-v2'
+            $gpgcheck = '1'
           }
         }
       }
@@ -31,7 +38,7 @@ class mackerel_agent::install(
         descr    => 'mackerel-agent',
         enabled  => 1,
         gpgkey   => $gpgkey_url,
-        gpgcheck => 1,
+        gpgcheck => $gpgcheck,
       }
 
       $pkg_require = Yumrepo['mackerel']
