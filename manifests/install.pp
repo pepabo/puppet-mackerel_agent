@@ -16,11 +16,12 @@ class mackerel_agent::install(
           $gpgcheck = '1'
         }
         default: {
-          if ($::operatingsystemmajrelease == '6')
+          if ($::operatingsystemmajrelease == '6') {
             $baseurl = 'http://yum.mackerel.io/centos/$basearch'
             $gpgkey_url = 'https://mackerel.io/assets/files/GPG-KEY-mackerel'
             $gpgcheck = '1'
-          if ($::operatingsystemmajrelease == '5') {
+          }
+          elsif ($::operatingsystemmajrelease == '5') {
             $baseurl = 'http://yum.mackerel.io/centos/$basearch'
             $gpgkey_url = 'https://mackerel.io/assets/files/GPG-KEY-mackerel'
             $gpgcheck = '0'
