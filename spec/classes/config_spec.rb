@@ -78,5 +78,31 @@ describe 'mackerel_agent::config' do
 
       it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.*\]\ncommand = \".*\"\naction = .*\nnotification_interval = .*\nmax_check_attempts = .*\ncheck_interval = .*$}) } # rubocop:disable Metrics/LineLength
     end
+
+    context 'with check_plugins specify env param' do
+      let(:params) do
+        { check_plugins: {
+          'mysql' => {
+            'command' => 'ruby /path/to/mysql.rb',
+            'env' => '{ "MYSQL_USERNAME" = "user", "MYSQL_PASSWORD" = "password" }',
+          },
+        } }
+      end
+
+      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.mysql\]\ncommand = "ruby \/path\/to\/mysql\.rb"\nenv = { "MYSQL_USERNAME" = "user", "MYSQL_PASSWORD" = "password" }$}) }
+    end
+
+    context 'with metrics_plugins specify env param' do
+      let(:params) do
+        { metrics_plugins: {
+          'mysql' => {
+            'command' => 'ruby /path/to/mysql.rb',
+            'env' => '{ "MYSQL_USERNAME" = "user", "MYSQL_PASSWORD" = "password" }',
+          },
+        } }
+      end
+
+      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.metrics.mysql\]\ncommand = "ruby \/path\/to\/mysql.rb"\nenv = { "MYSQL_USERNAME" = "user", "MYSQL_PASSWORD" = "password" }$}) }
+    end
   end
 end

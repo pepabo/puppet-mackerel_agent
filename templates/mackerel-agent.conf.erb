@@ -34,12 +34,22 @@ ignore = "<%= @ignore_filesystems %>"
 # followings are mackerel-agent-plugins
 #   help: http://help.mackerel.io/entry/howto/mackerel-agent-plugins
 #   repository: https://github.com/mackerelio/mackerel-agent-plugins
-<% @metrics_plugins.each do |plugin, command| %>
-<% unless command.nil? -%>
+<% @metrics_plugins.each do |plugin, parameters| %>
+<% unless parameters.nil? -%>
 [plugin.metrics.<%= plugin %>]
+<% if parameters.is_a?(Hash) -%>
+<% parameters.each do |param, data| -%>
+<% if param == "env" -%>
+<%= param %> = <%= data %>
+<% else -%>
+<%= param %> = "<%= data %>"
+<% end -%>
+<% end -%>
+<% else -%>
 command = "<%= command %>"
 <% end -%>
-<% end %>
+<% end -%>
+<% end -%>
 
 # Configuration for Custom Check Plugins
 #
@@ -54,7 +64,7 @@ command = "<%= command %>"
 <% if data =~ /^[0-9]+$/ -%>
 <%= param %> = <%= data %>
 <% else -%>
-<% if param == "action" -%>
+<% if param == "action" or param == "env" -%>
 <%= param %> = <%= data %>
 <% else -%>
 <%= param %> = "<%= data %>"
