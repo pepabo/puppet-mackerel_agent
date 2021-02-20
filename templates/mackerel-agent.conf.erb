@@ -61,18 +61,14 @@ command = "<%= command %>"
 [plugin.checks.<%= plugin %>]
 <% if parameters.is_a?(Hash) -%>
 <% parameters.each do |param, data| -%>
-<% if data =~ /^[0-9]+$/ -%>
-<%= param %> = <%= data %>
-<% else -%>
-<% if param == "action" or param == "env" -%>
+<% if data =~ /^[0-9]+$/ or param == "action" or param == "env" -%>
 <%= param %> = <%= data %>
 <% else -%>
 <%= param %> = "<%= data %>"
-<% end -%>
 <% end -%>
 <% end -%>
 <% else -%>
 command = "<%= parameters %>"
 <% end -%>
 <% end -%>
-<% end %>
+<% end -%>
