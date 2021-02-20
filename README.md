@@ -52,12 +52,20 @@ class { 'mackerel_agent':
   },
   check_plugins       => {
     access_log => '/usr/local/bin/check-log --file /var/log/access.log --pattern FATAL',
-    check_cron => '/usr/local/bin/check-procs -p crond'
+    check_cron => '/usr/local/bin/check-procs -p crond',
     check_ssh  => {
       command               => 'ruby /path/to/check-ssh.rb',
       notification_interval => '60',
       max_check_attempts    => '3',
       check_interval        => '5'
+    },
+    log => {
+      command => 'check-log -f /path/to/file -p PATTERN',
+      action => '{ command = "bash -c \'[ \"$MACKEREL_STATUS\" != \"OK\" ]\' && ruby /path/to/something.rb", user = "someone" }',
+    },
+    mysql => {
+      command => 'ruby /path/to/mysql.rb',
+      env => '{ "MYSQL_USERNAME" = "user", "MYSQL_PASSWORD" = "password" }',
     }
   },
   mkr_plugins         => {
@@ -91,6 +99,14 @@ mackerel_agent::check_plugins:
     notification_interval: '60'
     max_check_attempts: '3'
     check_interval: '5'
+  log:
+    command: 'check-log -f /path/to/file -p PATTERN'
+    action: |
+      { command = "bash -c '[ \"$MACKEREL_STATUS\" != \"OK\" ]' && ruby /path/to/something.rb", user = "someone" }
+  mysql:
+    command: 'ruby /path/to/mysql.rb',
+    env: |
+      { "MYSQL_USERNAME" = "user", "MYSQL_PASSWORD" = "password" }
 mackerel_agent::mkr_plugins:
   mackerel-plugin-sample: {}
   mackerel-plugin-json: {}
