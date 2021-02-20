@@ -68,15 +68,27 @@ describe 'mackerel_agent::config' do
         { check_plugins: {
           'ssh' => {
             'command' => 'ruby /path/to/check-ssh.rb',
-            'action' => '{ command = "bash -c \'[ \"$MACKEREL_STATUS\" != \"OK\" ]\' && ruby /path/to/something.rb", user = "someone" }',
-            'notification_interval' => '6',
+            'notification_interval' => '60',
             'max_check_attempts' => '3',
             'check_interval' => '5',
           },
         } }
       end
 
-      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.*\]\ncommand = \".*\"\naction = .*\nnotification_interval = .*\nmax_check_attempts = .*\ncheck_interval = .*$}) } # rubocop:disable Metrics/LineLength
+      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.ssh\]\ncommand = \"ruby \/path\/to\/check-ssh\.rb\"\nnotification_interval = 60\nmax_check_attempts = 3\ncheck_interval = 5$}) } # rubocop:disable Metrics/LineLength
+    end
+
+    context 'with check_plugins specify action param' do
+      let(:params) do
+        { check_plugins: {
+          'log' => {
+            'command' => 'check-log -f /path/to/file -p PATTERN',
+            'action' => '{ command = "bash -c \'[ \"$MACKEREL_STATUS\" != \"OK\" ]\' && ruby /path/to/something.rb", user = "someone" }',
+          },
+        } }
+      end
+
+      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.log\]\ncommand = "check-log -f \/path\/to\/file -p PATTERN"\naction = { command = "bash -c '\[ \\"\$MACKEREL_STATUS\\" != \\"OK\\" \]' && ruby \/path\/to\/something\.rb", user = "someone" }$}) }
     end
 
     context 'with check_plugins specify env param' do
