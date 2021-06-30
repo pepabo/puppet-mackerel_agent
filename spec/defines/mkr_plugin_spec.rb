@@ -30,9 +30,13 @@ describe 'mackerel_agent::mkr_plugin' do
         operatingsystemmajrelease: '9',
         os: {
           'name' => 'Debian',
+          'family' => 'Debian',
           'release' => {
             'full' => '9',
             'major' => '9',
+          },
+          'distro' => {
+            'codename' => 'stretch',
           },
         },
       }
