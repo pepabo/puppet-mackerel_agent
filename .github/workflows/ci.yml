@@ -64,14 +64,17 @@ jobs:
         CHECK: ${{ matrix.check }}
   centos:
     runs-on: ubuntu-latest
-    container: ghcr.io/k1low/centve:latest
+    container: ghcr.io/k1low/centve:7-base
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
       run: |
         anyenv-init
-        rbenv global 2.7.3
+        anyenv install rbenv -f
+        rbenv install 2.6.7
+        rbenv global 2.6.7
     - name: Run tests
       run: |
         gem install bundler
+        bundle install
         bundle exec rake
