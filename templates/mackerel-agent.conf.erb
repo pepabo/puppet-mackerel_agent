@@ -53,6 +53,8 @@ command = "<%= command %>"
 <% parameters.each do |param, data| -%>
 <% if data =~ /^[0-9]+$/ -%>
 <%= param %> = <%= data %>
+<% elsif data.is_a?(FalseClass) || data.is_a?(TrueClass) -%>
+<%= param %> = <%= data %>
 <% else -%>
 <% if param == "action" -%>
 <%= param %> = <%= data %>

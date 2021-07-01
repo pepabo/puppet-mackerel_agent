@@ -72,11 +72,12 @@ describe 'mackerel_agent::config' do
             'notification_interval' => '6',
             'max_check_attempts' => '3',
             'check_interval' => '5',
+            'prevent_alert_auto_close' => true,
           },
         } }
       end
 
-      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.*\]\ncommand = \".*\"\naction = .*\nnotification_interval = .*\nmax_check_attempts = .*\ncheck_interval = .*$}) } # rubocop:disable Metrics/LineLength
+      it { is_expected.to contain_file('mackerel-agent.conf').with_ensure('present').with_content(%r{^\[plugin.checks.*\]\ncommand = \".*\"\naction = .*\nnotification_interval = 6\nmax_check_attempts = 3\ncheck_interval = 5\nprevent_alert_auto_close = true.*$}) } # rubocop:disable Metrics/LineLength
     end
   end
 end
