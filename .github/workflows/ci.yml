@@ -19,15 +19,15 @@ jobs:
           - os: ubuntu-16.04
             ruby-version: 2.6
             puppet-version: '~> 6.0'
-            check: ''
+            check: 'spec'
           - os: ubuntu-18.04
             ruby-version: 2.6
             puppet-version: '~> 6.0'
-            check: ''
+            check: 'spec'
           - os: ubuntu-20.04
             ruby-version: 2.6
             puppet-version: '~> 6.0'
-            check: ''
+            check: 'spec'
           - os: ubuntu-18.04
             ruby-version: 2.6
             puppet-version: '~> 6.0'
@@ -77,4 +77,4 @@ jobs:
       run: |
         gem install bundler
         bundle install
-        bundle exec rake
+        bundle exec rake spec
