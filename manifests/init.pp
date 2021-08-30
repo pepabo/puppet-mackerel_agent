@@ -123,7 +123,6 @@ class mackerel_agent(
     }
 
     class { 'mackerel_agent::config':
-      ensure             => $ensure,
       apikey             => $apikey,
       roles              => $roles,
       host_status        => $host_status,

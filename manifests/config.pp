@@ -10,10 +10,10 @@ class mackerel_agent::config(
   $check_plugins      = {}
 ) {
 
-  if $ensure == absent or $ensure == purged {
-    $directory_ensure = absent
-  } else {
+  if $ensure == present {
     $directory_ensure = directory
+  } else {
+    $directory_ensure = absent
   }
 
   file { '/etc/mackerel-agent/conf.d':
