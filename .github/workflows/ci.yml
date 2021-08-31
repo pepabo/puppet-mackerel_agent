@@ -16,10 +16,6 @@ jobs:
         puppet-version: [dummy]
         check: [dummy]
         include:
-          - os: ubuntu-16.04
-            ruby-version: 2.6
-            puppet-version: '~> 6.0'
-            check: 'spec'
           - os: ubuntu-18.04
             ruby-version: 2.6
             puppet-version: '~> 6.0'
