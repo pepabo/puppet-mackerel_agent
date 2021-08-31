@@ -9,8 +9,15 @@ class mackerel_agent::config(
   $metrics_plugins    = {},
   $check_plugins      = {}
 ) {
+
+  if $ensure == present {
+    $directory_ensure = directory
+  } else {
+    $directory_ensure = absent
+  }
+
   file { '/etc/mackerel-agent/conf.d':
-    ensure  => directory,
+    ensure  => $directory_ensure,
     require => Package['mackerel-agent']
   }
 
