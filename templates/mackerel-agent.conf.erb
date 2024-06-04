@@ -51,7 +51,7 @@ command = "<%= command %>"
 [plugin.checks.<%= plugin %>]
 <% if parameters.is_a?(Hash) -%>
 <% parameters.each do |param, data| -%>
-<% if data =~ /^[0-9]+$/ -%>
+<% if data.is_a?(Integer) || data.is_a?(Float) || data =~ /^[0-9]+$/ -%>
 <%= param %> = <%= data %>
 <% elsif data.is_a?(FalseClass) || data.is_a?(TrueClass) -%>
 <%= param %> = <%= data %>
